@@ -18,3 +18,13 @@ connection.connect((err) => {
     console.log(`connected as id ${connection.threadId}`);
     start();
 });
+
+function start() {
+
+    inquirer.prompt({
+        name:"startQuestions",
+        type: "list",
+        message: "What would you like to do?",
+        choices: [""]
+})
+}
