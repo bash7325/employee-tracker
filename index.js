@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'Lngbrds9!',
-    database: '',
+    database: 'employee_tracker',
 });
 
 //CONNECT TO MYSQL THEN START
@@ -22,7 +22,7 @@ connection.connect((err) => {
 function start() {
 
     inquirer.prompt({
-        name:"startQuestions",
+        name:"action",
         type: "list",
         message: "What would you like to do?",
         choices: ['View All Employees',
@@ -69,3 +69,49 @@ function start() {
     }
 });
 };
+
+const allEmployeeSearch = () => {
+    console.log("test")
+    connection.query('SELECT first_name, last_name FROM employee', (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        });
+        
+  };
+
+  const addEmployee = () => {
+    inquirer
+    .prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'New Employee First Name:',
+            validate: answer => {
+                if (answer !== "") {
+                    return true
+                };
+                return "must enter a name"
+            }
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'New Employee Last Name:',
+        },
+        {
+            type: 'input',
+            name: 'roleId',
+            message: 'New Employee Role Id (if applicable):',
+        },
+        {
+            type: 'input',
+            name: 'managerId',
+            message: 'New Employees Manager Id (if applicable)',
+        }
+    ]).then((answer) => {
+        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${answer.firstName}, ${answer.lastName}, ${answer.roleId}, ${answer.managerId})`;
+        connection.query(query, (err, res) => {
+            console.log("New Employee Added!");
+        });
+    });
+}
