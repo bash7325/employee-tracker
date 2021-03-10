@@ -37,7 +37,6 @@ function start() {
     })
 
     .then(function(result) {
-      console.log("You entered: " + result.option);
       switch (result.option) {
         case "Add Department":
           addDepartment();
@@ -104,6 +103,45 @@ function addRole() {
       const title = res.title;
       const departmentID = res.departmentID;
       const query = `INSERT INTO role (title, department_id) VALUE("${title}", "${departmentID}")`;
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+      });
+    });
+}
+
+//ADD EMPLOYEE FUNCTION
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the first name?",
+        name: "firstName"
+      },
+      {
+        type: "input",
+        message: "What is the last name?",
+        name: "lastName"
+      },
+      {
+        type: "input",
+        message: "What is the role ID?",
+        name: "roleID"
+      },
+      {
+        type: "input",
+        message: "What is the manager ID?",
+        name: "managerID"
+      }
+    ])
+    .then(function(res) {
+      const firstName = res.firstName;
+      const lastName = res.lastName;
+      const roleID = res.roleID;
+      const managerID = res.managerID;
+      const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE("${firstName}", "${lastName}", "${roleID}", "${managerID}")`;
       connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
