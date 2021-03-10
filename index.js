@@ -2,143 +2,69 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleTable = require("console.table");
 
-//MYSQL CREATE CONNECTION
+//MYSQL CONNECTION
 const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
   password: "Lngbrds9!",
-  database: "employee_tracker",
+  database: "employee_tracker"
 });
 
 //CONNECT TO MYSQL THEN START
-connection.connect((err) => {
+connection.connect(function(err) {
   if (err) throw err;
-  console.log(`connected as id ${connection.threadId}`);
   start();
 });
-
 
 //START INQUIRER PROMPTS
 function start() {
   inquirer
     .prompt({
-      name: "action",
       type: "list",
+      name: "option",
       message: "What would you like to do?",
       choices: [
-        "View All Employees",
-        "View Employees By Department",
-        "View Employees By Manager",
+        "Add Department",
+        "Add Role",
         "Add Employee",
-        "Remove Employee",
+        "View Department",
+        "View Role",
+        "View Employee",
         "Update Employee Role",
-        "Update Employee Manager",
-      ],
+        "Exit"
+      ]
     })
-    .then((answer) => {
-      switch (answer.action) {
-        case "View All Employees":
-          allEmployeeSearch();
-          break;
 
-        case "View Employees By Department":
-          allEmployeesByDepartment();
+    .then(function(result) {
+      console.log("You entered: " + result.option);
+      switch (result.option) {
+        case "Add Department":
+          addDepartment();
           break;
-
-        case "View Employees By Manager":
-          allEmployeesByManager();
+        case "Add Role":
+          addRole();
           break;
-
         case "Add Employee":
           addEmployee();
           break;
-
-        case "Remove Employee":
-          removeEmployee();
+        case "View Department":
+          viewDepartment();
           break;
-
+        case "View Role":
+          viewRole();
+          break;
+        case "View Employee":
+          viewEmployee();
+          break;
         case "Update Employee Role":
           updateRole();
           break;
-
-        case "Update Employee Manager":
-          updateEmployeeManager();
-          break;
-
-        default:
-          console.log(`Invalid action: ${answer.action}`);
+        case "Exit":
+          connection.end();
           break;
       }
     });
 }
-//EMPLOYEE SEARCH FUNCTION
-const allEmployeeSearch = () => {
-  console.log("test");
-  connection.query("SELECT first_name, last_name, role_id, manager_id FROM employee", (err, res) => {
-    if (err) throw err;
-    console.table(res);
-    start();
-  });
-};
-//ADD NEW EMPLOYEE FUNCTION
-const addEmployee = () => {
-  inquirer
-    .prompt([
-      {
-        name: "firstName",
-        type: "input",
-        message: "New Employee First Name:",
-        validate: (answer) => {
-          if (answer !== "") {
-            return true;
-          }
-          return "must enter a name";
-        },
-      },
-      {
-        name: "lastName",
-        type: "input",
-        message: "New Employee Last Name:",
-      },
-      {
-        name: "roleId",
-        type: "input",
-        message: "New Employee Role Id:",
-      },
-      {
-        name: "managerId",
-        type: "input",
-        message: "New Employees Manager Id (if applicable):",
-      },
-    ])
-    .then((answer) => {
-      if (answer.managerId == "") {
-        answer.managerId = null;
-      }
-      connection.query(
-        `INSERT INTO employee (first_name, last_name, role_id, manager_id)
-         VALUES ("${answer.firstName}", "${answer.lastName}", ${answer.roleId}, ${answer.managerId})`,
-        (err, res) => {
-          if (err) throw err;
-          console.log("New Employee Added");
-          start();
-        }
-      );
-    });
-};
-//UPDATE ROLE
-function updateRole() {
-  const query = "SELECT id, first_name, last_name, role_id  FROM employee";
-  connection.query(query, function(err, res) {
-    if (err) throw err;
-    console.table(res);
-    {
-      inquirer.prompt({
-        type: "input",
-        message: "Which employee needs to be updated? (Use id #)",
-        name: "employee"
-      });
-    }
-  });
-}
+
+
