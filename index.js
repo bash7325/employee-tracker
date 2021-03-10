@@ -17,6 +17,8 @@ connection.connect((err) => {
   console.log(`connected as id ${connection.threadId}`);
   start();
 });
+
+
 //START INQUIRER PROMPTS
 function start() {
   inquirer
@@ -57,7 +59,7 @@ function start() {
           break;
 
         case "Update Employee Role":
-          updateEmployeeRole();
+          updateRole();
           break;
 
         case "Update Employee Manager":
@@ -73,7 +75,7 @@ function start() {
 //EMPLOYEE SEARCH FUNCTION
 const allEmployeeSearch = () => {
   console.log("test");
-  connection.query("SELECT first_name, last_name FROM employee", (err, res) => {
+  connection.query("SELECT first_name, last_name, role_id, manager_id FROM employee", (err, res) => {
     if (err) throw err;
     console.table(res);
     start();
@@ -125,3 +127,18 @@ const addEmployee = () => {
       );
     });
 };
+//UPDATE ROLE
+function updateRole() {
+  const query = "SELECT id, first_name, last_name, role_id  FROM employee";
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    {
+      inquirer.prompt({
+        type: "input",
+        message: "Which employee needs to be updated? (Use id #)",
+        name: "employee"
+      });
+    }
+  });
+}
