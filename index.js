@@ -84,3 +84,30 @@ function addDepartment() {
       });
     });
 }
+
+//ADD ROLE FUNCTION
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the job title you want to add?",
+        name: "title"
+      },
+      {
+        type: "input",
+        message: "What is the department ID for this position?",
+        name: "departmentID"
+      }
+    ])
+    .then(function(res) {
+      const title = res.title;
+      const departmentID = res.departmentID;
+      const query = `INSERT INTO role (title, department_id) VALUE("${title}", "${departmentID}")`;
+      connection.query(query, (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+      });
+    });
+}
