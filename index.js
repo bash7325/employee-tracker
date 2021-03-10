@@ -75,16 +75,16 @@ const allEmployeeSearch = () => {
     connection.query('SELECT first_name, last_name FROM employee', (err, res) => {
         if (err) throw err;
         console.table(res);
-        });
-        
+        start();
+        });      
   };
 
   const addEmployee = () => {
     inquirer
     .prompt([
         {
-            type: 'input',
             name: 'firstName',
+            type: 'input',
             message: 'New Employee First Name:',
             validate: answer => {
                 if (answer !== "") {
@@ -94,24 +94,25 @@ const allEmployeeSearch = () => {
             }
         },
         {
-            type: 'input',
             name: 'lastName',
+            type: 'input',
             message: 'New Employee Last Name:',
         },
         {
-            type: 'input',
             name: 'roleId',
+            type: 'input',
             message: 'New Employee Role Id (if applicable):',
         },
         {
-            type: 'input',
             name: 'managerId',
+            type: 'input',
             message: 'New Employees Manager Id (if applicable)',
         }
     ]).then((answer) => {
-        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${answer.firstName}, ${answer.lastName}, ${answer.roleId}, ${answer.managerId})`;
-        connection.query(query, (err, res) => {
+        connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.firstName}", "${answer.lastName}", ${answer.roleId}, ${answer.managerId})`, (err, res) => {
+            if (err) throw err;
             console.log("New Employee Added!");
+            start();
         });
     });
 }
