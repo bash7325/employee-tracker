@@ -188,16 +188,26 @@ function viewRole() {
 }
 
 //UPDATE ROLE FUNCTION
-// function updateRole() {
-//   connection.query("SELECT id, first_name, last_name, role_id  FROM employee", function(err, res) {
-//     if (err) throw err;
-//     console.table(res);
-//     {
-//       inquirer.prompt({
-//         type: "input",
-//         message: "Which employee do you want to update? (Select using ID)",
-//         name: "employee"
-//       });
-//     }
-//   });
-// }
+function updateRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Which employee would you like to update?",
+        name: "employeeUpdate"
+      },
+
+      {
+        type: "input",
+        message: "What role ID would you like to update to?",
+        name: "updateRole"
+      }
+    ])
+    .then(function(answer) {
+      connection.query('UPDATE employee SET role_id=? WHERE first_name= ?',[answer.updateRole, answer.employeeUpdate], (err, res) => {
+        if (err) throw err;
+        console.table(res);
+        start();
+      });
+    });
+}
