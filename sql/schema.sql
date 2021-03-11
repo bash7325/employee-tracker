@@ -12,7 +12,6 @@ PRIMARY KEY (id)
 CREATE TABLE role (
 id INTEGER NOT NULL AUTO_INCREMENT,
 title VARCHAR(30),
-salary DECIMAL(10,2),
 department_id INT NOT NULL,
 PRIMARY KEY (id)
 );

@@ -166,3 +166,12 @@ function viewDepartment() {
     start();
   });
 }
+
+//VIEW ROLE FUNCTION
+function viewRole() {
+  connection.query("SELECT * FROM role", (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
