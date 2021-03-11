@@ -28,5 +28,5 @@ An application to manage an employee database.
 
 # Video Demo
 
-![Employee Tracker Demo](https://i.imgur.com/LUVKI4A.gif)
+![Employee Tracker Demo](https://i.imgur.com/LUVKI4A.gifv)
 
