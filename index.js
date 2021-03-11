@@ -47,13 +47,13 @@ function start() {
         case "Add Employee":
           addEmployee();
           break;
-        case "View Departments":
+        case "View Department":
           viewDepartment();
           break;
         case "View Role":
           viewRole();
           break;
-        case "View Employees":
+        case "View Employee":
           viewEmployee();
           break;
         case "Update Employee Role":
@@ -151,7 +151,7 @@ function addEmployee() {
 
 //VIEW EMPLOYEE FUNCTION
 function viewEmployee() {
-  connection.query("SELECT * FROM employee", (err, res) => {
+  connection.query("SELECT first_name, last_name, role_id, manager_id FROM employee", (err, res) => {
     if (err) throw err;
     console.table(res);
     start();
