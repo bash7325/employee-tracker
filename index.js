@@ -47,13 +47,13 @@ function start() {
         case "Add Employee":
           addEmployee();
           break;
-        case "View Department":
+        case "View Departments":
           viewDepartment();
           break;
         case "View Role":
           viewRole();
           break;
-        case "View Employee":
+        case "View Employees":
           viewEmployee();
           break;
         case "Update Employee Role":
@@ -141,11 +141,19 @@ function addEmployee() {
       const lastName = res.lastName;
       const roleID = res.roleID;
       const managerID = res.managerID;
-      const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE("${firstName}", "${lastName}", "${roleID}", "${managerID}")`;
-      connection.query(query, (err, res) => {
+      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE("${firstName}", "${lastName}", "${roleID}", "${managerID}")`, (err, res) => {
         if (err) throw err;
         console.table(res);
         start();
       });
     });
+}
+
+//VIEW EMPLOYEE FUNCTION
+function viewEmployee() {
+  connection.query("SELECT * FROM employee", (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
 }
