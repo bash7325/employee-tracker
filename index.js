@@ -8,11 +8,11 @@ const connection = mysql.createConnection({
   port: 3306,
   user: "root",
   password: "Lngbrds9!",
-  database: "employee_tracker"
+  database: "employee_tracker",
 });
 
 //CONNECT TO MYSQL THEN START
-connection.connect(function(err) {
+connection.connect(function (err) {
   if (err) throw err;
   start();
 });
@@ -32,11 +32,11 @@ function start() {
         "View Role",
         "View Employee",
         "Update Employee Role",
-        "Exit"
-      ]
+        "Exit",
+      ],
     })
 
-    .then(function(result) {
+    .then(function (result) {
       switch (result.option) {
         case "Add Department":
           addDepartment();
@@ -72,15 +72,18 @@ function addDepartment() {
     .prompt({
       type: "input",
       message: "What department would you like to add?",
-      name: "department"
+      name: "department",
     })
-    .then(function(res) {
+    .then(function (res) {
       const department = res.department;
-      connection.query(`INSERT INTO department (name) VALUES("${department}")`, (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      });
+      connection.query(
+        `INSERT INTO department (name) VALUES("${department}")`,
+        (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
 }
 
@@ -91,23 +94,25 @@ function addRole() {
       {
         type: "input",
         message: "What is the job title you want to add?",
-        name: "title"
+        name: "title",
       },
       {
         type: "input",
         message: "What is the department ID for this position?",
-        name: "departmentID"
-      }
+        name: "departmentID",
+      },
     ])
-    .then(function(res) {
+    .then(function (res) {
       const title = res.title;
       const departmentID = res.departmentID;
-      const query = `INSERT INTO role (title, department_id) VALUE("${title}", "${departmentID}")`;
-      connection.query(query, (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      });
+      connection.query(
+        `INSERT INTO role (title, department_id) VALUE("${title}", "${departmentID}")`,
+        (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
 }
 
@@ -118,44 +123,50 @@ function addEmployee() {
       {
         type: "input",
         message: "What is the first name?",
-        name: "firstName"
+        name: "firstName",
       },
       {
         type: "input",
         message: "What is the last name?",
-        name: "lastName"
+        name: "lastName",
       },
       {
         type: "input",
         message: "What is the role ID?",
-        name: "roleID"
+        name: "roleID",
       },
       {
         type: "input",
         message: "What is the manager ID?",
-        name: "managerID"
-      }
+        name: "managerID",
+      },
     ])
-    .then(function(res) {
+    .then(function (res) {
       const firstName = res.firstName;
       const lastName = res.lastName;
       const roleID = res.roleID;
       const managerID = res.managerID;
-      connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE("${firstName}", "${lastName}", "${roleID}", "${managerID}")`, (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      });
+      connection.query(
+        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE("${firstName}", "${lastName}", "${roleID}", "${managerID}")`,
+        (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          start();
+        }
+      );
     });
 }
 
 //VIEW EMPLOYEE FUNCTION
 function viewEmployee() {
-  connection.query("SELECT first_name, last_name, role_id, manager_id FROM employee", (err, res) => {
-    if (err) throw err;
-    console.table(res);
-    start();
-  });
+  connection.query(
+    "SELECT first_name, last_name, role_id, manager_id FROM employee",
+    (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      start();
+    }
+  );
 }
 
 //VIEW DEPARTMENT FUNCTION
@@ -175,3 +186,18 @@ function viewRole() {
     start();
   });
 }
+
+//UPDATE ROLE FUNCTION
+// function updateRole() {
+//   connection.query("SELECT id, first_name, last_name, role_id  FROM employee", function(err, res) {
+//     if (err) throw err;
+//     console.table(res);
+//     {
+//       inquirer.prompt({
+//         type: "input",
+//         message: "Which employee do you want to update? (Select using ID)",
+//         name: "employee"
+//       });
+//     }
+//   });
+// }
